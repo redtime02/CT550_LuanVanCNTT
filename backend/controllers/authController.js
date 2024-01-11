@@ -58,7 +58,18 @@ async function login(req, res) {
   }
 }
 
+async function getUsers(req, res) {
+  try {
+    const users = await User.find(); // Lấy tất cả người dùng
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get users" });
+  }
+}
+
 module.exports = {
   register,
   login,
+  getUsers,
 };

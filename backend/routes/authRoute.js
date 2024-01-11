@@ -8,4 +8,7 @@ router.post("/register", authController.register);
 // Đăng nhập
 router.post("/login", authController.login);
 
+// Lấy danh sách người dùng
+router.get("/users", authController.getUsers);
+
 module.exports = router;

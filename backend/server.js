@@ -18,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/trash-type", require("./routes/trashTypeRoute"));
+app.use("/api/location", require("./routes/locationRoute"));
 
 // Start server
 const PORT = 3000;

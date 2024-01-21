@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
-var rewardedSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+const rewardedSchema = new mongoose.Schema({
   bonusDate: {
     type: Date,
     default: Date.now,

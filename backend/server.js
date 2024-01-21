@@ -21,6 +21,7 @@ app.use("/api/trash-type", require("./routes/trashTypeRoute"));
 app.use("/api/location", require("./routes/locationRoute"));
 app.use("/api/feedback", require("./routes/feedbackRoute"));
 app.use("/api/bonus", require("./routes/bonusItemRoute"));
+app.use("/api/reward", require("./routes/rewardedRoute"));
 
 // Start server
 const PORT = 3000;

@@ -6,11 +6,13 @@ const locationDetailSchema = new mongoose.Schema({
     ref: "Location",
     required: true,
   },
-  trashTypeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "TrashType",
-    required: true,
-  },
+  trashTypeId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TrashType",
+      required: true,
+    },
+  ],
   otherDetails: {
     type: String,
   },

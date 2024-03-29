@@ -103,7 +103,7 @@ const handleChooseImage1 = async () => {
     const fetchTrashTypes = async () => {
       try {
         const response = await axios.get(
-          'http://192.168.1.5:3000/api/trash-type',
+          'http://192.168.100.66:3000/api/trash-type',
         );
         const data = response.data;
         // Cập nhật state với danh sách trash type
@@ -137,7 +137,7 @@ const handleChooseImage1 = async () => {
     try {
       // Gửi dữ liệu địa điểm mới lên server
       const locationResponse = await axios.post(
-        'http://192.168.1.5:3000/api/location/mark',
+        'http://192.168.100.66:3000/api/location/mark',
         {
           name: confirmedAddress,
           latitude: confirmedLatitude,
@@ -160,7 +160,7 @@ const handleChooseImage1 = async () => {
 
       // Gửi dữ liệu hình ảnh lên server
       const imageUploadResponse = await axios.post(
-        `http://192.168.1.5:3000/api/location/${locationId}/images`,
+        `http://192.168.100.66:3000/api/location/${locationId}/images`,
         formData,
         {
           headers: {

@@ -26,7 +26,7 @@ const ConfirmScreen = ({ route }) => {
 
   const handleConfirm = async () => {
     try {
-      await axios.patch(`http://192.168.1.5:3000/api/location/${id}/confirm`, {
+      await axios.patch(`http://192.168.100.66:3000/api/location/${id}/confirm`, {
         point: totalScore
       });
       // Xử lý sau khi xác nhận thành công (nếu cần)

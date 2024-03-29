@@ -25,7 +25,7 @@ const QuantityScreen = ({ route }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.5:3000/api/location/${id}`);
+      const response = await axios.get(`http://192.168.100.66:3000/api/location/${id}`);
       const data = response.data;
       console.log(data);
 

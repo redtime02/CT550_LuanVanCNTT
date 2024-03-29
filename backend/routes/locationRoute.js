@@ -6,9 +6,15 @@ const {
   confirmCollected,
   getLocations,
   findTrashTypeNameByLocationId,
-  getLocationById
+  getLocationById,
+  getCollectedLocations,
+  getUncollectedLocations,
 } = require("../controllers/locationController");
 const authMiddleware = require("../middlewares/authMiddleware");
+
+router.get("/collected", authMiddleware, getCollectedLocations);
+
+router.get("/uncollected", getUncollectedLocations);
 
 // Đánh dấu địa điểm nhặt ve chai
 router.post("/mark", authMiddleware, markLocation);
@@ -20,10 +26,10 @@ router.post("/:id/images", authMiddleware, addImage);
 router.patch("/:id/confirm", authMiddleware, confirmCollected);
 
 // Danh sách địa điểm ve chai
-router.get("/", getLocations)
+router.get("/", getLocations);
 
-router.get("/:locationId", findTrashTypeNameByLocationId)
+router.get("/:locationId", findTrashTypeNameByLocationId);
 
-router.get('/mark/:id', getLocationById);
+router.get("/mark/:id", getLocationById);
 
 module.exports = router;

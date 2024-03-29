@@ -132,6 +132,7 @@ import ListScreen from './src/ListScreen';
 import MapLocateScreen from './src/MapLocateScreen';
 import QuantityScreen from './src/QuantityScreen';
 import ConfirmScreen from './src/ConfirmScreen';
+import CollectedScreen from './src/CollectedScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -166,6 +167,7 @@ const App = () => {
           {() => (
             <Tab.Navigator>
               <Tab.Screen name="List" component={ListScreen} />
+              <Tab.Screen name="Collected" component={CollectedScreen} />
               <Tab.Screen
                 name="Other"
                 component={OtherScreen}

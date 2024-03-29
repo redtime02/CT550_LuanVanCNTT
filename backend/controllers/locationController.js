@@ -183,6 +183,34 @@ async function getLocationById(req, res) {
   }
 }
 
+async function getCollectedLocations(req, res) {
+  try {
+    // Truy vấn tất cả các địa điểm đã thu thập từ cơ sở dữ liệu
+    const { _id } = req.user;
+    const collectedLocations = await Location.find({ isCollected: true, 'collector': _id });
+
+    // Trả về danh sách các địa điểm đã thu thập dưới dạng JSON
+    res.json(collectedLocations);
+  } catch (error) {
+    // Xử lý lỗi nếu có
+    res.status(500).json({ message: "Failed to fetch collected locations" });
+  }
+}
+
+async function getUncollectedLocations(req, res) {
+  try {
+    // Truy vấn tất cả các địa điểm đã thu thập từ cơ sở dữ liệu
+    const uncollectedLocations = await Location.find({ isCollected: false });
+
+    // Trả về danh sách các địa điểm đã thu thập dưới dạng JSON
+    res.json(uncollectedLocations);
+  } catch (error) {
+    // Xử lý lỗi nếu có
+    res.status(500).json({ message: "Failed to fetch uncollected locations" });
+  }
+}
+
+
 
 module.exports = {
   markLocation,
@@ -190,5 +218,7 @@ module.exports = {
   confirmCollected,
   getLocations,
   findTrashTypeNameByLocationId,
-  getLocationById
+  getLocationById,
+  getCollectedLocations,
+  getUncollectedLocations
 };

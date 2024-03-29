@@ -67,9 +67,25 @@ async function getTrashTypes(req, res) {
   }
 }
 
+// Tìm tên TrashType dựa trên id và trả về JSON response
+async function findTrashTypeNameById(req, res) {
+  try {
+    const { id } = req.params;
+    const trashType = await TrashType.findById(id);
+    if (!trashType) {
+      return res.status(404).json({ message: "TrashType not found" });
+    }
+    return res.json({ name: trashType.name });
+  } catch (error) {
+    console.error("Error finding TrashType name by id:", error);
+    return res.status(500).json({ message: "Failed to find TrashType name" });
+  }
+}
+
 module.exports = {
   createTrashType,
   updateTrashType,
   deleteTrashType,
   getTrashTypes,
+  findTrashTypeNameById
 };

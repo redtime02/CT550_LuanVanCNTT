@@ -7,6 +7,10 @@ const trashTypeSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    point: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

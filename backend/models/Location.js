@@ -25,6 +25,10 @@ var locationSchema = new mongoose.Schema(
         default: null,
       },
     ],
+    imageUrl: {
+      type: String,
+      default: null,
+    },
     isCollected: {
       type: Boolean,
       default: false,

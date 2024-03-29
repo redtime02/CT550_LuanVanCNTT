@@ -14,4 +14,7 @@ router.delete("/:id", trashTypeController.deleteTrashType);
 // Hiển thị danh sách loại vật liệu tái chế
 router.get("/", trashTypeController.getTrashTypes);
 
+// Route để tìm tên TrashType dựa trên id
+router.get('/:id', trashTypeController.findTrashTypeNameById);
+
 module.exports = router;

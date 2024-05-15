@@ -6,6 +6,9 @@ const feedbackSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  locationName: {
+    type: String,
+  },
   message: {
     type: String,
     required: true,

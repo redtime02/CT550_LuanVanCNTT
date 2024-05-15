@@ -28,7 +28,19 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'user',
+    default: "user",
+  },
+  markCount: {
+    type: Number,
+    default: 0,
+  },
+  collectCount: {
+    type: Number,
+    default: 0,
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false,
   },
 });
 

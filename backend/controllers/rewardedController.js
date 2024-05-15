@@ -6,10 +6,11 @@ const User = require("../models/User");
 // Hàm để người dùng chọn vật thưởng
 async function chooseReward(req, res) {
   try {
-    const { userId, bonusItemId } = req.body;
+    const { _id } = req.user;
+    const { bonusItemId } = req.body;
 
     const rewarded = new Rewarded({
-      userId: userId,
+      userId: _id,
     });
 
     // Kiểm tra xem rewardedId và bonusItemId có tồn tại hay không
@@ -23,7 +24,7 @@ async function chooseReward(req, res) {
     }
 
     // Lấy thông tin người dùng
-    const user = await User.findById(userId);
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "Invalid userId" });
@@ -35,6 +36,8 @@ async function chooseReward(req, res) {
         .status(400)
         .json({ message: "Insufficient points to choose this bonus item" });
     } else {
+      user.point -= bonusItem.point;
+      await user.save();
       // Lưu thông tin vật thưởng đã được chọn
       await rewarded.save();
       const rewardedDetail = new RewardedDetail({
@@ -71,7 +74,39 @@ async function getRewards(req, res) {
   }
 }
 
+async function getRewardsByUsername(req, res) {
+  try {
+    const { _id } = req.user; // Assuming _id is passed as a parameter in the URL
+
+    // Find the user by _id
+    const user = await User.findOne({ _id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find rewards for the user
+    const rewards = await RewardedDetail.find()
+      .populate({
+        path: "rewardedId",
+        select: "userId bonusDate",
+        match: { userId: user._id }, // Match rewards for the specific user
+      })
+      .populate({
+        path: "bonusItemId",
+        select: "name image",
+      })
+      .select("rewardedId bonusItemId");
+
+    res.json(rewards);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve rewards" });
+  }
+}
+
 module.exports = {
   chooseReward,
   getRewards,
+  getRewardsByUsername,
 };

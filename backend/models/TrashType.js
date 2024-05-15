@@ -11,6 +11,9 @@ const trashTypeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    amount: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

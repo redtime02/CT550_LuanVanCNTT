@@ -1,16 +1,25 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {View, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  Alert,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginScreen = ({navigation, route}) => {
+  const [email, setEmail] = useState(route.params?.email || '');
+  const [password, setPassword] = useState(route.params?.password || '');
 
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        'http://192.168.100.66:3000/api/auth/login',
+        'http://10.13.128.162:3000/api/auth/login',
         {
           email,
           password,
@@ -22,24 +31,28 @@ const LoginScreen = ({navigation}) => {
 
       // Kiểm tra role từ phản hồi của backend
       const {user} = response.data;
-      
 
       // Lưu token vào AsyncStorage
       await AsyncStorage.setItem('token', response.data.token);
       console.log(response.data.token);
-      
+
+      await AsyncStorage.setItem(
+        'user',
+        JSON.stringify(response.data.user._id),
+      );
+      console.log(response.data.user._id);
+
       const role = user.role;
       console.log(role);
-        
 
       // Điều hướng tùy thuộc vào vai trò
       if (role === 'user') {
         // Đăng nhập thành công với vai trò là user, chuyển hướng đến trang Home
-        navigation.replace('Main', {screen: 'Home'});
+        navigation.replace('Main', {screen: 'Trang chủ'});
       } else if (role === 'collector') {
         // Đăng nhập thành công với vai trò là collector, hiển thị thông báo
         // Đăng nhập thành công với vai trò là user, chuyển hướng đến trang Home
-        navigation.replace('Collector', {screen: 'Home'});
+        navigation.replace('Collector', {screen: 'Danh sách'});
       }
     } catch (error) {
       console.log(error);
@@ -62,6 +75,10 @@ const LoginScreen = ({navigation}) => {
       return Promise.reject(error);
     },
   );
+
+  const handleRegister = () => {
+    navigation.replace('Register');
+  };
 
   return (
     // <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -99,70 +116,78 @@ const LoginScreen = ({navigation}) => {
     //   <Button title="Đăng nhập" onPress={handleLogin} />
     // </View>
     <View style={styles.container}>
-    <View style={styles.inputContainer}>
-      <Image
-        style={[styles.icon, styles.inputIcon]}
-        source={{ uri: 'https://img.icons8.com/ios-filled/512/circled-envelope.png' }}
-      />
-      <TextInput
-        style={styles.inputs}
-        placeholder="Email"
-        placeholderTextColor="gray"
-        keyboardType="email-address"
-        underlineColorAndroid="transparent"
-        value={email}
-        onChangeText={setEmail}
-      />
-    </View>
+      <View style={styles.inputContainer}>
+        <Image
+          style={[styles.icon, styles.inputIcon]}
+          source={{
+            uri: 'https://img.icons8.com/ios-filled/512/circled-envelope.png',
+          }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Email"
+          placeholderTextColor="gray"
+          keyboardType="email-address"
+          underlineColorAndroid="transparent"
+          value={email}
+          onChangeText={setEmail}
+        />
+      </View>
 
-    <View style={styles.inputContainer}>
-      <Image
-        style={[styles.icon, styles.inputIcon]}
-        source={{ uri: 'https://img.icons8.com/ios-glyphs/512/key.png' }}
-      />
-      <TextInput
-        style={styles.inputs}
-        placeholder="Mật khẩu"
-        placeholderTextColor="gray"
-        secureTextEntry={true}
-        underlineColorAndroid="transparent"
-        value={password}
-        onChangeText={setPassword}
-      />
-    </View>
+      <View style={styles.inputContainer}>
+        <Image
+          style={[styles.icon, styles.inputIcon]}
+          source={{uri: 'https://img.icons8.com/ios-glyphs/512/key.png'}}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Mật khẩu"
+          placeholderTextColor="gray"
+          secureTextEntry={true}
+          underlineColorAndroid="transparent"
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
 
-    <TouchableOpacity style={styles.restoreButtonContainer}>
-      <Text style={{ color: 'black' }}>Quên mật khẩu?</Text>
-    </TouchableOpacity>
+      <TouchableOpacity style={styles.restoreButtonContainer}>
+        <Text style={{color: 'black'}}>Quên mật khẩu?</Text>
+      </TouchableOpacity>
 
-    <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={handleLogin}>
+      <TouchableOpacity
+        style={[styles.buttonContainer, styles.loginButton]}
+        onPress={handleLogin}>
         <Text style={styles.loginText}>Đăng nhập</Text>
-    </TouchableOpacity>
+      </TouchableOpacity>
 
-    <TouchableOpacity style={styles.buttonContainer}>
-      <Text style={{ color: 'black' }}>Đăng ký</Text>
-    </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleRegister}>
+        <Text style={{color: 'black'}}>Đăng ký</Text>
+      </TouchableOpacity>
 
-    <TouchableOpacity style={[styles.buttonContainer, styles.fabookButton]}>
-      <View style={styles.socialButtonContent}>
-        <Image
-          style={styles.icon}
-          source={{ uri: 'https://img.icons8.com/color/70/000000/facebook.png' }}
-        />
-        <Text style={styles.loginText}>Đăng nhập bằng Facebook</Text>
-      </View>
-    </TouchableOpacity>
+      {/* <TouchableOpacity style={[styles.buttonContainer, styles.fabookButton]}>
+        <View style={styles.socialButtonContent}>
+          <Image
+            style={styles.icon}
+            source={{
+              uri: 'https://img.icons8.com/color/70/000000/facebook.png',
+            }}
+          />
+          <Text style={styles.loginText}>Đăng nhập bằng Facebook</Text>
+        </View>
+      </TouchableOpacity> */}
 
-    <TouchableOpacity style={[styles.buttonContainer, styles.googleButton]}>
-      <View style={styles.socialButtonContent}>
-        <Image
-          style={styles.icon}
-          source={{ uri: 'https://img.icons8.com/color/70/000000/youtube.png' }}
-        />
-        <Text style={styles.loginText}>Đăng nhập bằng Google</Text>
-      </View>
-    </TouchableOpacity>
-  </View>
+      <TouchableOpacity style={[styles.buttonContainer, styles.googleButton]}>
+        <View style={styles.socialButtonContent}>
+          <Image
+            style={styles.icon}
+            source={{
+              uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
+            }}
+          />
+          <Text style={styles.loginText}>Đăng nhập bằng Google</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -252,11 +277,12 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     borderBottomColor: '#FFFFFF',
     flex: 1,
-    color: 'black'
+    color: 'black',
   },
   icon: {
     width: 30,
     height: 30,
+    marginRight: 10,
   },
   inputIcon: {
     marginLeft: 15,
@@ -297,4 +323,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginRight: 5,
   },
-})
+});

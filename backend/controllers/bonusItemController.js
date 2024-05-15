@@ -87,7 +87,8 @@ async function deleteBonusItem(req, res) {
       return res.status(404).json({ message: "Bonus item not found" });
     }
 
-    await bonusItem.remove();
+    await BonusItem.findByIdAndDelete(id);
+    // console.log(bonusItem);
 
     res.json({ message: "Bonus item deleted successfully" });
   } catch (error) {
@@ -107,10 +108,23 @@ async function getBonusItems(req, res) {
   }
 }
 
+async function getBonusItemById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const bonusItem = await BonusItem.findById(id);
+    res.json({ bonusItem });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to retrieve bonus items" });
+  }
+}
+
 module.exports = {
   addBonusItem,
   uploadImage,
   updateBonusItem,
   deleteBonusItem,
   getBonusItems,
+  getBonusItemById,
 };

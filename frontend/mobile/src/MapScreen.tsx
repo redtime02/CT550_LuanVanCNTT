@@ -37,7 +37,7 @@ const MapScreen = () => {
   const getAddressFromCoordinates = async (latitude, longitude) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyB56kWVOzQACkup4rS9oRNPT4Sszz8wSgY`,
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDRQDF3GwXpM1_rRSrvTErSCDOSxQMHFTY`,
       );
       const address = response.data.results[0].formatted_address;
       return address;
@@ -50,14 +50,16 @@ const MapScreen = () => {
   const handleConfirm = async () => {
     setConfirmedLatitude(position.latitude);
     setConfirmedLongitude(position.longitude);
-    
+
     // Lấy thông tin địa chỉ từ tọa độ
-    const address = await getAddressFromCoordinates(position.latitude, position.longitude);
+    const address = await getAddressFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
     console.log(address);
-    
-    
+
     // Chuyển hướng và truyền thông tin địa chỉ
-    navigation.navigate('Locate', {
+    navigation.navigate('Đánh dấu', {
       latitude: position.latitude,
       longitude: position.longitude,
       address: address, // Truyền thông tin địa chỉ

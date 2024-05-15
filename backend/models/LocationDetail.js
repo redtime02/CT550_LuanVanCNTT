@@ -13,6 +13,9 @@ const locationDetailSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  weight: {
+    type: Number,
+  },
   otherDetails: {
     type: String,
   },

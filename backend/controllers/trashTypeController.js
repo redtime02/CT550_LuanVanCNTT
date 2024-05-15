@@ -3,10 +3,11 @@ const TrashType = require("../models/TrashType");
 // Thêm loại vật liệu tái chế
 async function createTrashType(req, res) {
   try {
-    const { name } = req.body;
+    const { name, point } = req.body;
 
     const newTrashType = new TrashType({
       name,
+      point,
     });
 
     await newTrashType.save();
@@ -21,11 +22,11 @@ async function createTrashType(req, res) {
 async function updateTrashType(req, res) {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, point } = req.body;
 
     const updatedTrashType = await TrashType.findByIdAndUpdate(
       id,
-      { name },
+      { name, point },
       { new: true }
     );
 
@@ -33,8 +34,9 @@ async function updateTrashType(req, res) {
       return res.status(404).json({ message: "Trash type not found" });
     }
 
-    res.json({ message: "Trash type updated successfully" });
+    res.json({ message: "Trash type updated successfully", updatedTrashType });
   } catch (error) {
+    console.error("Error updating trash type:", error);
     res.status(500).json({ message: "Failed to update trash type" });
   }
 }
@@ -82,10 +84,25 @@ async function findTrashTypeNameById(req, res) {
   }
 }
 
+async function findTrashTypeById(req, res) {
+  try {
+    const { id } = req.params;
+    const trashType = await TrashType.findById(id);
+    if (!trashType) {
+      return res.status(404).json({ message: "TrashType not found" });
+    }
+    return res.json(trashType);
+  } catch (error) {
+    console.error("Error finding TrashType by id:", error);
+    return res.status(500).json({ message: "Failed to find TrashType" });
+  }
+}
+
 module.exports = {
   createTrashType,
   updateTrashType,
   deleteTrashType,
   getTrashTypes,
-  findTrashTypeNameById
+  findTrashTypeNameById,
+  findTrashTypeById,
 };

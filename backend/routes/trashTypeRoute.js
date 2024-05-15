@@ -15,6 +15,8 @@ router.delete("/:id", trashTypeController.deleteTrashType);
 router.get("/", trashTypeController.getTrashTypes);
 
 // Route để tìm tên TrashType dựa trên id
-router.get('/:id', trashTypeController.findTrashTypeNameById);
+router.get("/:id", trashTypeController.findTrashTypeNameById);
+
+router.get("/waste/:id", trashTypeController.findTrashTypeById);
 
 module.exports = router;

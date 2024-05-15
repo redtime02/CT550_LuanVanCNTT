@@ -6,6 +6,7 @@ const {
   updateBonusItem,
   deleteBonusItem,
   getBonusItems,
+  getBonusItemById,
 } = require("../controllers/bonusItemController");
 
 // Định tuyến thêm vật thưởng
@@ -21,5 +22,7 @@ router.delete("/:id", deleteBonusItem);
 router.get("/", getBonusItems);
 
 router.post("/:id/image", uploadImage);
+
+router.get("/:id", getBonusItemById);
 
 module.exports = router;
